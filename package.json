@@ -1,0 +1,24 @@
+{
+  "name": "salaree",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "scrape": "node scraper.mjs"
+  },
+  "dependencies": {
+    "antd": "^4.20.4",
+    "chart.js": "^3.7.1",
+    "cheerio": "^1.0.0-rc.10",
+    "next": "^12.1.6",
+    "node-fetch": "^3.2.4",
+    "react": "^18.1.0",
+    "react-chartjs-2": "^4.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "prettier": "2.6.2"
+  }
+}
