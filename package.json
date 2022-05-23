@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "scrape": "node scraper.mjs"
+    "scrape-jobs-bg": "node scrapers/jobs.bg.mjs",
+    "scrape-dev-bg": "node scrapers/dev.bg.mjs"
   },
   "dependencies": {
     "antd": "^4.20.4",

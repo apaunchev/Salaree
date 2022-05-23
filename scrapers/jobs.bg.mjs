@@ -1,7 +1,7 @@
 import fs from 'fs';
-import path from 'path';
 import fetch from 'node-fetch';
 import { load } from 'cheerio';
+import { convertGrossToNet } from './common.mjs';
 
 // We track the category "IT - All" (56) which supposedly combines all IT jobs:
 export const JOBS_URL =
@@ -96,27 +96,15 @@ const parseJobInfo = str => {
   };
 };
 
-const convertGrossToNet = grossAmount => {
-  grossAmount = Number(grossAmount);
-
-  const INSURANCE_THRESHOLD = 3000;
-  const CONTRIBUTIONS_PERCENTAGE = 0.1378;
-  const INCOME_TAX_PERCENTAGE = 0.1;
-
-  const insuranceContributions =
-    Math.min(INSURANCE_THRESHOLD, grossAmount) * CONTRIBUTIONS_PERCENTAGE;
-  const incomeTax =
-    (grossAmount - insuranceContributions) * INCOME_TAX_PERCENTAGE;
-
-  return grossAmount - insuranceContributions - incomeTax;
-};
-
 const scrape = async () => {
   const listings = await fetchListings();
   const fileName = `${new Date().toISOString().substring(0, 10)}.json`;
 
   console.log('💻 Writing scrape...');
-  fs.writeFileSync(`data/scrapes/${fileName}`, JSON.stringify(listings));
+  fs.writeFileSync(
+    `data/scrapes/jobs.bg/${fileName}`,
+    JSON.stringify(listings),
+  );
 
   console.log('💻 Done!');
 };
