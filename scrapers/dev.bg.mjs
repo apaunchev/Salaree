@@ -73,6 +73,11 @@ const fetchPage = async (page = 1) => {
       }
     });
 
+    // We only want the listings with a salary
+    if (!salary) {
+      return;
+    }
+
     data.push({
       key: $(elem).data('job-id') || null,
       date: date.text()?.trim() || null,
