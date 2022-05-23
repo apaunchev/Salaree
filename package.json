@@ -10,8 +10,8 @@
     "eslint:check": "eslint --ext .js,.jsx .",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
-    "scrape-jobs-bg": "node scrapers/jobs.bg.mjs",
-    "scrape-dev-bg": "node scrapers/dev.bg.mjs",
+    "scrape:jobs-bg": "node scrapers/jobs.bg.mjs",
+    "scrape:dev-bg": "node scrapers/dev.bg.mjs",
     "prepare": "husky install"
   },
   "dependencies": {

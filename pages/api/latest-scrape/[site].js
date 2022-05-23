@@ -3,7 +3,7 @@ const path = require('path');
 
 const getMostRecentFile = dir => {
   const files = orderRecentFiles(path.join(process.cwd(), dir));
-  return files.length ? files[0] : undefined;
+  return files.length > 0 ? files[0] : undefined;
 };
 
 const orderRecentFiles = dir => {

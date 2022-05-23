@@ -1,6 +1,6 @@
 import useSWR from 'swr';
-
-const fetcher = (...args) => fetch(...args).then(res => res.json());
+import { fetcher } from 'lib/fetcher';
+import { Salary } from 'components/salary';
 
 export default function Home() {
   const { data, error } = useSWR('/api/latest-scrape/dev.bg', fetcher);
@@ -9,5 +9,19 @@ export default function Home() {
 
   if (!data) return <div>Loading...</div>;
 
-  return <span>{data.length} listings</span>;
+  return (
+    <div>
+      <ol>
+        {data.map(item => {
+          return (
+            <li key={item.key} className={item.key}>
+              {item.date} - {item.company.name} -{' '}
+              <a href={item.url}>{item.title}</a> - {item.location} -{' '}
+              <Salary {...item.salary} />
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
 }

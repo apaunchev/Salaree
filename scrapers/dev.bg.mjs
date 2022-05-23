@@ -65,6 +65,7 @@ const fetchPage = async (page = 1) => {
         salary = {
           range: isGross ? range.map(convertGrossToNet) : range.map(Number),
           rangeOriginal: range.map(Number),
+          currency: 'BGN',
           isGross,
         };
       } else {
