@@ -16,7 +16,8 @@ const orderRecentFiles = dir => {
 };
 
 export default async function latestScrape(req, res) {
-  const dir = 'data/scrapes';
+  const { site } = req.query;
+  const dir = `data/scrapes/${site}`;
   const file = getMostRecentFile(dir);
   const readFile = fs.readFileSync(path.join(process.cwd(), dir, file));
 
