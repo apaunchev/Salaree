@@ -19,23 +19,59 @@ function formatData(data) {
     });
 }
 
-function filterListings(listings, location) {
+function filterListings(listings, location, seniority) {
   const whitelistedTitles = new RegExp(
     /(front[- ]?end|javascript|js|web|react|angular|vue)/,
     'gi',
   );
   const blacklistedTitles = new RegExp(/(full[- ]?stack|node)/, 'gi');
 
-  return listings
-    .filter(listing => {
-      if (location) {
-        return listing.location === location;
-      }
-
-      return true;
-    })
+  listings = listings
     .filter(listing => listing.title.match(whitelistedTitles))
     .filter(listing => !listing.title.match(blacklistedTitles));
+
+  if (location) {
+    listings = listings.filter(l => l.location === location);
+  }
+
+  if (seniority) {
+    let whitelist;
+    let blacklist;
+
+    switch (seniority) {
+      case 'junior':
+        whitelist = new RegExp(/(junior)/, 'gi');
+        blacklist = new RegExp(/(senior|lead|experienced)/, 'gi');
+
+        listings = listings
+          .filter(l => l.title.match(whitelist))
+          .filter(l => !l.title.match(blacklist));
+
+        break;
+      case 'mid':
+        whitelist = new RegExp(/(mid|regular|\w)/, 'gi');
+        blacklist = new RegExp(/(junior|senior|lead|experienced)/, 'gi');
+
+        listings = listings
+          .filter(l => l.title.match(whitelist))
+          .filter(l => !l.title.match(blacklist));
+
+        break;
+      case 'senior':
+        whitelist = new RegExp(/(senior|lead|experienced)/, 'gi');
+        blacklist = new RegExp(/(junior)/, 'gi');
+
+        listings = listings
+          .filter(l => l.title.match(whitelist))
+          .filter(l => !l.title.match(blacklist));
+
+        break;
+      default:
+        break;
+    }
+  }
+
+  return listings;
 }
 
 export default function Home() {
@@ -48,6 +84,7 @@ export default function Home() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [listings, setListings] = useState([]);
+  const [selectedSeniority, setSelectedSeniority] = useState('');
 
   useEffect(() => {
     if (data) {
@@ -64,9 +101,13 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedLocation) {
-      setListings(filterListings(data, selectedLocation));
+      setListings(filterListings(data, selectedLocation, selectedSeniority));
     }
-  }, [selectedLocation]);
+
+    if (selectedSeniority) {
+      setListings(filterListings(data, selectedLocation, selectedSeniority));
+    }
+  }, [data, selectedLocation, selectedSeniority]);
 
   if (error) return <div>Failed to load</div>;
 
@@ -74,8 +115,6 @@ export default function Home() {
 
   const formattedListings = formatData(listings);
   const sortedListings = sortAsc(formattedListings);
-
-  console.log('render');
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -91,9 +130,13 @@ export default function Home() {
               </option>
             ))}
           </select>
-          <select>
+          <select
+            value={selectedSeniority}
+            onChange={e => setSelectedSeniority(e.target.value)}
+          >
+            <option value="none">Choose seniority</option>
             <option value="junior">Junior</option>
-            <option value="">Unspecified / Mid</option>
+            <option value="mid">Mid</option>
             <option value="senior">Senior</option>
           </select>
           <span>Listings: {listings.length}</span>
