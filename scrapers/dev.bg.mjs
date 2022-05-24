@@ -101,7 +101,7 @@ const scrape = async () => {
   const fileName = `${new Date().toISOString().substring(0, 10)}.json`;
 
   console.log('💻 Writing scrape...');
-  fs.writeFileSync(`data/scrapes/dev.bg/${fileName}`, JSON.stringify(listings));
+  fs.writeFileSync(`data/dev.bg/${fileName}`, JSON.stringify(listings));
 
   console.log('💻 Done!');
 };
