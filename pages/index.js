@@ -55,36 +55,53 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <div className="flex items-center gap-4">
-        <select
-          value={selectedLocation}
-          onChange={e => setSelectedLocation(e.target.value)}
-        >
-          {locations.map(location => (
-            <option key={location} value={location}>
-              {location}
-            </option>
-          ))}
-        </select>
-        <span>Listings: {listings.length}</span>
-        <span>Lowest: {sortedListings.at(0)}</span>
-        <span>Highest: {sortedListings.at(-1)}</span>
-        <span>Median: {median(formattedListings)}</span>
-        <span>25th: {round(quantile(formattedListings, 0.25))}</span>
-        <span>75th: {round(quantile(formattedListings, 0.75))}</span>
-        <span>90th: {round(quantile(formattedListings, 0.9))}</span>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-4">
+          <select
+            value={selectedLocation}
+            onChange={e => setSelectedLocation(e.target.value)}
+          >
+            {locations.map(location => (
+              <option key={location} value={location}>
+                {location}
+              </option>
+            ))}
+          </select>
+          <span>Listings: {listings.length}</span>
+          <span>Lowest: {sortedListings.at(0)}</span>
+          <span>Highest: {sortedListings.at(-1)}</span>
+          <span>Median: {median(formattedListings)}</span>
+          <span>25th: {round(quantile(formattedListings, 0.25))}</span>
+          <span>75th: {round(quantile(formattedListings, 0.75))}</span>
+          <span>90th: {round(quantile(formattedListings, 0.9))}</span>
+        </div>
+        <table className="table-auto w-full">
+          <thead>
+            <tr className="text-left">
+              <th>Date</th>
+              <th>Company</th>
+              <th>Title</th>
+              <th className="text-center">Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listings.map(({ key, date, company, url, title, salary }) => {
+              return (
+                <tr key={key}>
+                  <td>{date}</td>
+                  <td>{company.name}</td>
+                  <td>
+                    <a href={url}>{title}</a>
+                  </td>
+                  <td className="text-center">
+                    <Salary {...salary} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-      <ol>
-        {listings.map(item => {
-          return (
-            <li key={item.key} className={item.key}>
-              {item.date} - {item.company.name} -{' '}
-              <a href={item.url}>{item.title}</a> - {item.location} -{' '}
-              <Salary {...item.salary} />
-            </li>
-          );
-        })}
-      </ol>
     </div>
   );
 }
