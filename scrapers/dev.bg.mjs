@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import { load } from 'cheerio';
 import { convertGrossToNet } from './common.mjs';
 
-export const JOBS_URL = 'https://dev.bg/company/jobs/front-end-development/';
+const JOBS_URL = 'https://dev.bg/company/jobs/front-end-development/';
 
 const fetchListings = async () => {
   let page = 1;

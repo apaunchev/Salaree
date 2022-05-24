@@ -3,9 +3,8 @@ import fetch from 'node-fetch';
 import { load } from 'cheerio';
 import { convertGrossToNet } from './common.mjs';
 
-// We track the category "IT - All" (56) which supposedly combines all IT jobs:
-export const JOBS_URL =
-  'https://www.jobs.bg/front_job_search.php?categories[0]=56&salary_from=1&ajax=1';
+const JOBS_URL =
+  'https://www.jobs.bg/front_job_search.php?categories[]=56&domains[]=1&salary_from=1&ajax=1';
 
 const fetchListings = async () => {
   let page = 1;
