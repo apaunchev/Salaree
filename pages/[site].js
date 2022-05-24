@@ -158,7 +158,7 @@ export default function Home() {
               <th>Date</th>
               <th>Company</th>
               <th>Title</th>
-              <th className="text-center">Salary</th>
+              <th className="text-right">Salary</th>
             </tr>
           </thead>
           <tbody>
@@ -170,7 +170,7 @@ export default function Home() {
                   <td>
                     <a href={url}>{title}</a>
                   </td>
-                  <td className="text-center">
+                  <td className="text-right">
                     <Salary {...salary} />
                   </td>
                 </tr>

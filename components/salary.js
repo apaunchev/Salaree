@@ -4,14 +4,20 @@ export function Salary({ range, rangeOriginal, currency, isGross }) {
   range = range.map(formatNumber);
   rangeOriginal = rangeOriginal.map(formatNumber);
 
+  if (isGross) {
+    return (
+      <abbr
+        title={`${renderSalaryRange(rangeOriginal, currency)} gross`}
+        className="whitespace-nowrap"
+      >
+        {renderSalaryRange(range, currency)}
+      </abbr>
+    );
+  }
+
   return (
     <span className="whitespace-nowrap">
-      {renderSalaryRange(range, currency)}{' '}
-      {isGross && (
-        <abbr title={`${renderSalaryRange(rangeOriginal, currency)} gross`}>
-          ?
-        </abbr>
-      )}
+      {renderSalaryRange(range, currency)}
     </span>
   );
 }
