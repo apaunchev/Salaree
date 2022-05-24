@@ -119,33 +119,38 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-4">
-          <select
-            value={selectedLocation}
-            onChange={e => setSelectedLocation(e.target.value)}
-          >
-            {locations.map(location => (
-              <option key={location} value={location}>
-                {location}
-              </option>
-            ))}
-          </select>
-          <select
-            value={selectedSeniority}
-            onChange={e => setSelectedSeniority(e.target.value)}
-          >
-            <option value="none">Choose seniority</option>
-            <option value="junior">Junior</option>
-            <option value="mid">Mid</option>
-            <option value="senior">Senior</option>
-          </select>
-          <span>Listings: {listings.length}</span>
-          <span>Lowest: {sortedListings.at(0) || 0}</span>
-          <span>Highest: {sortedListings.at(-1) || 0}</span>
-          <span>Median: {round(median(formattedListings))}</span>
-          <span>25th: {round(quantile(formattedListings, 0.25))}</span>
-          <span>75th: {round(quantile(formattedListings, 0.75))}</span>
-          <span>90th: {round(quantile(formattedListings, 0.9))}</span>
+        <div className="flex items-center gap-4 justify-between">
+          <div className="flex items-center gap-4">
+            <select
+              value={selectedLocation}
+              onChange={e => setSelectedLocation(e.target.value)}
+            >
+              {locations.map(location => (
+                <option key={location} value={location}>
+                  {location}
+                </option>
+              ))}
+            </select>
+            <select
+              value={selectedSeniority}
+              onChange={e => setSelectedSeniority(e.target.value)}
+            >
+              <option value="none">Choose seniority</option>
+              <option value="junior">Junior</option>
+              <option value="mid">Mid</option>
+              <option value="senior">Senior</option>
+            </select>
+            <span>Listings: {listings.length}</span>
+            <span>Lowest: {sortedListings.at(0) || 0}</span>
+            <span>Highest: {sortedListings.at(-1) || 0}</span>
+            <span>Median: {round(median(formattedListings))}</span>
+            <span>25th: {round(quantile(formattedListings, 0.25))}</span>
+            <span>75th: {round(quantile(formattedListings, 0.75))}</span>
+            <span>90th: {round(quantile(formattedListings, 0.9))}</span>
+          </div>
+          <div>
+            <button className="cursor-pointer">Refresh</button>
+          </div>
         </div>
         <table className="table-auto w-full">
           <thead>
