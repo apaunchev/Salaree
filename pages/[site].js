@@ -2,9 +2,15 @@ import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { fetcher } from 'lib/fetcher';
 import { Salary } from 'components/salary';
-import { mean, median, quantile, round, sortAsc } from 'lib/math';
+import {
+  getUniqueValues,
+  mean,
+  median,
+  quantile,
+  round,
+  sortAsc,
+} from 'lib/helpers';
 import { useRouter } from 'next/router';
-import { getUniqueValues } from 'lib/utils';
 
 function formatData(data) {
   return data

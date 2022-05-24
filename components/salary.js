@@ -1,4 +1,4 @@
-import { formatNumber } from 'lib/math';
+import { formatNumber } from 'lib/helpers';
 
 export function Salary({ range, rangeOriginal, currency, isGross }) {
   range = range.map(formatNumber);
