@@ -37,11 +37,17 @@ export default function Home() {
 
   useEffect(() => {
     if (data && selectedLocation) {
-      const ignoredTitlesRegex = new RegExp(/full[- ]?stack/, 'gi');
+      const whitelistedTitles = new RegExp(
+        /(front[- ]?end|javascript|js|web|react|angular|vue)/,
+        'gi',
+      );
+      const blacklistedTitles = new RegExp(/full[- ]?stack/, 'gi');
+
       setListings(
         data
           .filter(listing => listing.location === selectedLocation)
-          .filter(listing => !listing.title.match(ignoredTitlesRegex)),
+          .filter(listing => listing.title.match(whitelistedTitles))
+          .filter(listing => !listing.title.match(blacklistedTitles)),
       );
     }
   }, [data, selectedLocation]);
@@ -68,9 +74,9 @@ export default function Home() {
             ))}
           </select>
           <span>Listings: {listings.length}</span>
-          <span>Lowest: {sortedListings.at(0)}</span>
-          <span>Highest: {sortedListings.at(-1)}</span>
-          <span>Median: {median(formattedListings)}</span>
+          <span>Lowest: {sortedListings.at(0) || 0}</span>
+          <span>Highest: {sortedListings.at(-1) || 0}</span>
+          <span>Median: {round(median(formattedListings))}</span>
           <span>25th: {round(quantile(formattedListings, 0.25))}</span>
           <span>75th: {round(quantile(formattedListings, 0.75))}</span>
           <span>90th: {round(quantile(formattedListings, 0.9))}</span>
