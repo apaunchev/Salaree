@@ -30,6 +30,7 @@ function filterListings(
   location,
   seniority,
   salarySortDirection,
+  searchTerm,
 ) {
   const whitelistedTitles = new RegExp(
     /(front[- ]?end|javascript|js|web|react|angular|vue)/,
@@ -82,6 +83,15 @@ function filterListings(
     }
   }
 
+  if (searchTerm) {
+    searchTerm = searchTerm.toLowerCase();
+    listings = listings.filter(
+      l =>
+        l.title.toLowerCase().includes(searchTerm) ||
+        l.company.name.toLowerCase().includes(searchTerm),
+    );
+  }
+
   if (salarySortDirection) {
     switch (salarySortDirection) {
       case 'asc':
@@ -114,6 +124,7 @@ export default function Home() {
   const [listings, setListings] = useState([]);
   const [selectedSeniority, setSelectedSeniority] = useState('');
   const [salarySortDirection, setSalarySortDirection] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     if (data) {
@@ -135,9 +146,16 @@ export default function Home() {
         selectedLocation,
         selectedSeniority,
         salarySortDirection,
+        searchTerm,
       ),
     );
-  }, [data, selectedLocation, selectedSeniority, salarySortDirection]);
+  }, [
+    data,
+    selectedLocation,
+    selectedSeniority,
+    salarySortDirection,
+    searchTerm,
+  ]);
 
   function handleSalarySortClick() {
     if (!salarySortDirection) {
@@ -161,6 +179,11 @@ export default function Home() {
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4 justify-between">
           <div className="flex items-center gap-4">
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
             <select
               value={selectedLocation}
               onChange={e => setSelectedLocation(e.target.value)}
