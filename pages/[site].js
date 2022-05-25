@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { fetcher } from 'lib/fetcher';
@@ -10,7 +11,6 @@ import {
   round,
   sortAsc,
 } from 'lib/helpers';
-import { useRouter } from 'next/router';
 
 function formatData(data) {
   return data
@@ -25,7 +25,12 @@ function formatData(data) {
     });
 }
 
-function filterListings(listings, location, seniority) {
+function filterListings(
+  listings = [],
+  location,
+  seniority,
+  salarySortDirection,
+) {
   const whitelistedTitles = new RegExp(
     /(front[- ]?end|javascript|js|web|react|angular|vue)/,
     'gi',
@@ -77,6 +82,23 @@ function filterListings(listings, location, seniority) {
     }
   }
 
+  if (salarySortDirection) {
+    switch (salarySortDirection) {
+      case 'asc':
+        listings = listings.sort(
+          (a, b) => b.salary.range[0] - a.salary.range[0],
+        );
+        break;
+      case 'desc':
+        listings = listings.sort(
+          (a, b) => a.salary.range[0] - b.salary.range[0],
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
   return listings;
 }
 
@@ -91,6 +113,7 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [listings, setListings] = useState([]);
   const [selectedSeniority, setSelectedSeniority] = useState('');
+  const [salarySortDirection, setSalarySortDirection] = useState(null);
 
   useEffect(() => {
     if (data) {
@@ -106,14 +129,25 @@ export default function Home() {
   }, [data]);
 
   useEffect(() => {
-    if (selectedLocation) {
-      setListings(filterListings(data, selectedLocation, selectedSeniority));
-    }
+    setListings(
+      filterListings(
+        data,
+        selectedLocation,
+        selectedSeniority,
+        salarySortDirection,
+      ),
+    );
+  }, [data, selectedLocation, selectedSeniority, salarySortDirection]);
 
-    if (selectedSeniority) {
-      setListings(filterListings(data, selectedLocation, selectedSeniority));
+  function handleSalarySortClick() {
+    if (!salarySortDirection) {
+      setSalarySortDirection('asc');
+    } else if (salarySortDirection === 'asc') {
+      setSalarySortDirection('desc');
+    } else if (salarySortDirection === 'desc') {
+      setSalarySortDirection(null);
     }
-  }, [data, selectedLocation, selectedSeniority]);
+  }
 
   if (error) return <div>Failed to load</div>;
 
@@ -164,7 +198,16 @@ export default function Home() {
               <th>Date</th>
               <th>Company</th>
               <th>Title</th>
-              <th className="text-right">Salary</th>
+              <th className="text-right">
+                <button className="font-bold" onClick={handleSalarySortClick}>
+                  Salary{' '}
+                  {salarySortDirection === 'asc'
+                    ? '⬇️'
+                    : salarySortDirection === 'desc'
+                    ? '⬆️'
+                    : null}
+                </button>
+              </th>
             </tr>
           </thead>
           <tbody>
