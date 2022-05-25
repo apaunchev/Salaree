@@ -1,19 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-
-const getMostRecentFile = dir => {
-  const files = orderRecentFiles(path.join(process.cwd(), dir));
-  return files.length > 0 ? files[0] : undefined;
-};
-
-const orderRecentFiles = dir => {
-  return fs
-    .readdirSync(dir)
-    .filter(file => fs.lstatSync(path.join(dir, file)).isFile())
-    .map(file => ({ file, mtime: fs.lstatSync(path.join(dir, file)).mtime }))
-    .sort((a, b) => b.mtime.getTime() - a.mtime.getTime())
-    .map(file => file.file);
-};
+import fs from 'fs';
+import path from 'path';
+import { getMostRecentFile } from 'lib/files';
 
 export default async function latestScrape(req, res) {
   const { site } = req.query;

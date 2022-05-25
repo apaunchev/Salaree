@@ -1,4 +1,4 @@
-import { formatNumber } from 'lib/helpers';
+import { formatNumber } from 'lib/math';
 
 export function Salary({ range, rangeOriginal, currency, isGross }) {
   range = range.map(formatNumber);
@@ -22,7 +22,8 @@ export function Salary({ range, rangeOriginal, currency, isGross }) {
   );
 }
 
-const renderSalaryRange = (range, currency) =>
-  range.length > 1
+function renderSalaryRange(range, currency) {
+  return range.length > 1
     ? `${range[0]}–${range[1]} ${currency}`
     : `${range[0]} ${currency}`;
+}

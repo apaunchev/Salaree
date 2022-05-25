@@ -6,7 +6,9 @@ export async function middleware(req) {
 
   if (pathname == '/') {
     const url = req.nextUrl.clone();
+
     url.pathname = `/${SCRAPERS[0]}`;
+
     return NextResponse.redirect(url);
   }
 
