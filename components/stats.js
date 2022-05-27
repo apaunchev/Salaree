@@ -1,36 +1,72 @@
-import { sortAsc } from 'lib/helpers';
-import { mean, median, quantile, round } from 'lib/math';
-
-function formatData(data) {
-  return data
-    .map(item => item.salary)
-    .map(item => item.range)
-    .map(item => {
-      if (item[1]) {
-        return round(mean(item));
-      }
-
-      return round(item[0]);
-    });
-}
+import { useMemo } from 'react';
+import { formatCurrency, mean, median, quantile, round } from 'lib/math';
+import { Chart } from './chart';
 
 export function Stats({ listings }) {
-  const formattedListings = formatData(listings);
-  const sortedListings = sortAsc(formattedListings);
+  const formattedSalaries = useMemo(
+    () =>
+      listings
+        .map(item => item.salary)
+        .map(item => item.range)
+        .map(item => {
+          if (item[1]) {
+            return round(mean(item));
+          }
+
+          return round(item[0]);
+        }),
+    [listings],
+  );
 
   if (listings.length === 0) {
     return null;
   }
 
   return (
-    <ul>
-      <li>Listings: {listings.length}</li>
-      <li>Lowest: {sortedListings.at(0) || 0}</li>
-      <li>Highest: {sortedListings.at(-1) || 0}</li>
-      <li>Median: {round(median(formattedListings))}</li>
-      <li>25th: {round(quantile(formattedListings, 0.25))}</li>
-      <li>75th: {round(quantile(formattedListings, 0.75))}</li>
-      <li>90th: {round(quantile(formattedListings, 0.9))}</li>
-    </ul>
+    <div className="grid grid-cols-[3fr_1fr]">
+      <div className="pr-6">
+        <Chart data={formattedSalaries} />
+      </div>
+      <div className="border-l pl-6">
+        <dl>
+          <StatsItem
+            title="Median salary (50th percentile)"
+            value={formatNumber(median(formattedSalaries))}
+            isAccented
+          />
+          <StatsItem
+            title="25th percentile"
+            value={formatNumber(quantile(formattedSalaries, 0.25))}
+          />
+          <StatsItem
+            title="75th percentile"
+            value={formatNumber(quantile(formattedSalaries, 0.75))}
+          />
+          <StatsItem
+            title="90th percentile"
+            value={formatNumber(quantile(formattedSalaries, 0.9))}
+          />
+        </dl>
+      </div>
+    </div>
   );
+}
+
+function StatsItem({ title, value, isAccented = false }) {
+  return (
+    <>
+      <dt className={`font-semibold text-sm`}>{title}</dt>
+      <dd
+        className={`mb-3 font-light ${
+          isAccented ? 'text-4xl text-brand' : 'text-2xl'
+        }`}
+      >
+        {value}
+      </dd>
+    </>
+  );
+}
+
+function formatNumber(n) {
+  return formatCurrency(round(n));
 }

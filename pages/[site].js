@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState, useMemo } from 'react';
 import useSWR from 'swr';
 import { Container } from 'components/container';
 import { Stats } from 'components/stats';
@@ -38,28 +38,13 @@ export default function Home() {
     },
   );
 
-  const [listings, setListings] = useState([]);
-  const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedSeniority, setSelectedSeniority] = useState('');
   const [salarySortDirection, setSalarySortDirection] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    if (data) {
-      const listings = filterListings(data?.items);
-      const locations = getUniqueValues(
-        listings.map(listing => listing.location),
-      );
-
-      setListings(listings);
-      setLocations(locations);
-      setSelectedLocation(locations[0]);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setListings(
+  const listings = useMemo(
+    () =>
       filterListings(
         data?.items,
         selectedLocation,
@@ -67,14 +52,18 @@ export default function Home() {
         salarySortDirection,
         searchTerm,
       ),
-    );
-  }, [
-    data,
-    selectedLocation,
-    selectedSeniority,
-    salarySortDirection,
-    searchTerm,
-  ]);
+    [
+      data?.items,
+      selectedLocation,
+      selectedSeniority,
+      salarySortDirection,
+      searchTerm,
+    ],
+  );
+  const locations = useMemo(
+    () => getUniqueValues(data?.items.map(l => l.location)),
+    [data?.items],
+  );
 
   function handleSalarySortClick() {
     if (!salarySortDirection) {
@@ -145,7 +134,9 @@ export default function Home() {
         />
         <button onClick={handleResetClick}>Reset</button>
       </div>
+      <hr />
       <Stats listings={listings} />
+      <hr />
       <Table
         listings={listings}
         salarySortDirection={salarySortDirection}
@@ -180,8 +171,8 @@ function filterListings(
   const blacklistedTitles = new RegExp(/(full[- ]?stack|node)/, 'gi');
 
   listings = listings
-    .filter(listing => listing.title.match(whitelistedTitles))
-    .filter(listing => !listing.title.match(blacklistedTitles));
+    .filter(l => l.title.match(whitelistedTitles))
+    .filter(l => !l.title.match(blacklistedTitles));
 
   if (location) {
     listings = listings.filter(l => l.location === location);
