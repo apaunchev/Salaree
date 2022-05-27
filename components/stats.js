@@ -23,7 +23,7 @@ export function Stats({ postings }) {
   }
 
   return (
-    <div className="grid grid-cols-[3fr_1fr]">
+    <div className="grid grid-cols-[3fr_1fr] pb-4 border-b">
       <div className="pr-6">
         <Chart data={formattedSalaries} />
       </div>

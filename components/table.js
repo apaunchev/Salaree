@@ -13,7 +13,10 @@ export function Table({ postings, salarySortDirection, onSalarySortClick }) {
           <th>Company</th>
           <th>Title</th>
           <th className="text-right">
-            <button className="font-bold" onClick={onSalarySortClick}>
+            <button
+              className="font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-hover"
+              onClick={onSalarySortClick}
+            >
               Salary{' '}
               {salarySortDirection === 'asc'
                 ? '⬇️'

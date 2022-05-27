@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-a:hover {
-  @apply underline;
+a {
+  @apply font-medium text-brand hover:text-brand-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-hover;
 }

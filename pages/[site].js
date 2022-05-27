@@ -6,6 +6,9 @@ import { Stats } from 'components/stats';
 import { Table } from 'components/table';
 import { fetcher } from 'lib/fetcher';
 import { getUniqueValues } from 'lib/helpers';
+import { Select } from 'components/select';
+import { Input } from 'components/input';
+import { Button } from 'components/button';
 
 export default function Home() {
   const {
@@ -88,7 +91,7 @@ export default function Home() {
   }
 
   function handleResetClick() {
-    setSelectedLocation(locations[0]);
+    setSelectedLocation('');
     setSelectedSeniority('');
     setSearchTerm('');
   }
@@ -107,18 +110,19 @@ export default function Home() {
 
   return (
     <Container>
-      <div className="flex items-center gap-4">
-        <select
+      <div className="flex items-center gap-4 pb-4 border-b">
+        <Select
           value={selectedLocation}
           onChange={handleSelectedLocationChange}
         >
+          <option value="">Choose location</option>
           {locations.map(location => (
             <option key={location} value={location}>
               {location}
             </option>
           ))}
-        </select>
-        <select
+        </Select>
+        <Select
           value={selectedSeniority}
           onChange={handleSelectedSeniorityChange}
         >
@@ -126,32 +130,28 @@ export default function Home() {
           <option value="junior">Junior</option>
           <option value="mid">Mid</option>
           <option value="senior">Senior</option>
-        </select>
-        <input
+        </Select>
+        <Input
+          placeholder="Search"
           type="search"
           value={searchTerm}
           onChange={handleSearchTermChange}
         />
-        <button onClick={handleResetClick}>Reset</button>
+        <Button onClick={handleResetClick}>Reset</Button>
       </div>
-      <hr />
       <Stats postings={postings} />
-      <hr />
       <Table
         postings={postings}
         salarySortDirection={salarySortDirection}
         onSalarySortClick={handleSalarySortClick}
       />
-      <hr />
-      <div className="flex align-items gap-4">
-        <button
-          className="cursor-pointer"
-          disabled={isRefreshing}
-          onClick={handleRefreshClick}
-        >
+      <div className="flex items-center gap-4 pt-4 border-t">
+        <Button disabled={isRefreshing} onClick={handleRefreshClick}>
           Refresh
-        </button>
-        <span>Last scrape: {new Date(data.scrapedAt).toLocaleString()}</span>
+        </Button>
+        <p className="text-sm">
+          Last scrape: {new Date(data.scrapedAt).toLocaleString()}
+        </p>
       </div>
     </Container>
   );
