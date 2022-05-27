@@ -78,11 +78,15 @@ export default async function handler(req, res) {
   function parseJobInfo(str) {
     let [location] = str.split('; ');
     location = location.replace('wifi ', '');
-    const salaryText = str.match(/Заплата.*$/)[0];
-    const indexOfEnd = salaryText.indexOf(' (');
-    const range = salaryText.match(/\d+/g);
-    const isGross = salaryText.indexOf('Бруто') !== -1;
-    const currency = salaryText.slice(indexOfEnd - 3, indexOfEnd);
+
+    const [, salaryText, currency, type] = str.match(
+      /Заплата (от \d+ до \d+|\d+)? (\w+) \((Нето|Бруто)\)/,
+    );
+    const rangeMatch = salaryText.match(/от (\d+) до (\d+)/);
+    const range = rangeMatch
+      ? [rangeMatch[1], rangeMatch[2]]
+      : [salaryText, salaryText];
+    const isGross = type === 'Бруто';
     const salary = {
       range:
         isGross && currency === 'BGN'
