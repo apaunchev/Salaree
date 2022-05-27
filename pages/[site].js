@@ -148,7 +148,7 @@ export default function Home() {
       />
       <div className="flex items-center gap-4 pt-4 border-t">
         <Button disabled={isRefreshing} onClick={handleRefreshClick}>
-          Refresh
+          {isRefreshing ? 'Refreshing...' : 'Refresh'}
         </Button>
         <p className="text-sm">
           Last scrape: {new Date(data.scrapedAt).toLocaleString()}
