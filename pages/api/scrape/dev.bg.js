@@ -56,14 +56,22 @@ export default async function handler(req, res) {
         const isSalaryTag = $(elem).hasClass('blue');
 
         if (isSalaryTag) {
-          const range = $(elem)
+          const salaryText = $(elem)
             .contents()
             .eq(2)
             .text()
             .trim()
             .replaceAll(' ', '')
-            .replace('лв.', '')
-            .split('-');
+            .replace('лв.', '');
+
+          let range;
+          if (salaryText.includes('-')) {
+            const [low, high] = salaryText.split('-');
+            range = [low, high];
+          } else {
+            range = [salaryText, salaryText];
+          }
+
           const type = $(elem).find('.hidden-text').text().trim();
           const isGross = Boolean(type.match(/b2b/i));
 
