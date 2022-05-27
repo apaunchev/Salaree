@@ -6,7 +6,8 @@ import { convertGrossToNet } from 'lib/math';
 
 const MOCK_SCRAPE = false;
 const DATA_DIR = 'data/dev.bg';
-const SCRAPE_URL = 'https://dev.bg/company/jobs/front-end-development/';
+const SCRAPE_URL =
+  'https://dev.bg/company/jobs/front-end-development?_salary=1';
 
 export default async function handler(req, res) {
   async function fetchData() {
@@ -32,7 +33,7 @@ export default async function handler(req, res) {
     console.log(`💻 Fetching page ${page}...`);
 
     const response = await fetch(
-      page === 1 ? SCRAPE_URL : `${SCRAPE_URL}/page/${page}/`,
+      page === 1 ? SCRAPE_URL : `${SCRAPE_URL}&_paged=${page}`,
     );
     const body = await response.text();
 
