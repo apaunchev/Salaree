@@ -18,9 +18,9 @@ export function Table({ postings, salarySortDirection, onSalarySortClick }) {
               onClick={onSalarySortClick}
             >
               Salary{' '}
-              {salarySortDirection === 'asc'
+              {salarySortDirection === 'desc'
                 ? '⬇️'
-                : salarySortDirection === 'desc'
+                : salarySortDirection === 'asc'
                 ? '⬆️'
                 : null}
             </button>
