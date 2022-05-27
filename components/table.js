@@ -6,13 +6,13 @@ export function Table({ postings, salarySortDirection, onSalarySortClick }) {
   }
 
   return (
-    <table className="table-auto w-full">
+    <table className="table-fixed w-full">
       <thead>
         <tr className="text-left">
-          <th>Date</th>
-          <th>Company</th>
-          <th>Title</th>
-          <th className="text-right">
+          <th className="p-1 w-[200px]">Location</th>
+          <th className="p-1 w-[250px]">Company</th>
+          <th className="p-1">Title</th>
+          <th className="p-1 w-[160px] text-right">
             <button
               className="font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-hover"
               onClick={onSalarySortClick}
@@ -28,15 +28,15 @@ export function Table({ postings, salarySortDirection, onSalarySortClick }) {
         </tr>
       </thead>
       <tbody>
-        {postings.map(({ key, date, company, url, title, salary }) => {
+        {postings.map(({ key, company, url, title, salary, location }) => {
           return (
-            <tr key={key}>
-              <td>{date}</td>
-              <td>{company.name}</td>
-              <td>
+            <tr key={key} className="hover:bg-indigo-50">
+              <td className="p-1 truncate">{location}</td>
+              <td className="p-1 truncate">{company.name}</td>
+              <td className="p-1 truncate">
                 <a href={url}>{title}</a>
               </td>
-              <td className="text-right">
+              <td className="p-1 truncate text-right">
                 <Salary {...salary} />
               </td>
             </tr>
