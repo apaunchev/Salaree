@@ -37,10 +37,10 @@ export default async function handler(req, res) {
     const body = await response.text();
 
     const $ = load(body);
-    const listingsEl = $('.job-list-item');
+    const postingsEl = $('.job-list-item');
     const items = [];
 
-    listingsEl.each((_, elem) => {
+    postingsEl.each((_, elem) => {
       const date = $(elem).find('.date');
       const title = $(elem).find('.job-title');
       const url = $(elem).find('.overlay-link');
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
         }
       });
 
-      // We only want the listings with a salary
+      // We only want the postings with a salary
       if (!salary) {
         return;
       }
@@ -97,7 +97,7 @@ export default async function handler(req, res) {
       });
     });
 
-    return { items, isLastPage: listingsEl.length === 0 };
+    return { items, isLastPage: postingsEl.length === 0 };
   }
 
   async function scrape() {

@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { formatCurrency, mean, median, quantile, round } from 'lib/math';
 import { Chart } from './chart';
 
-export function Stats({ listings }) {
+export function Stats({ postings }) {
   const formattedSalaries = useMemo(
     () =>
-      listings
+      postings
         .map(item => item.salary)
         .map(item => item.range)
         .map(item => {
@@ -15,10 +15,10 @@ export function Stats({ listings }) {
 
           return round(item[0]);
         }),
-    [listings],
+    [postings],
   );
 
-  if (listings.length === 0) {
+  if (postings.length === 0) {
     return null;
   }
 

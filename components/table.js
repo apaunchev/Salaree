@@ -1,8 +1,8 @@
 import { Salary } from './salary';
 
-export function Table({ listings, salarySortDirection, onSalarySortClick }) {
-  if (listings.length === 0) {
-    return <p>No listings found.</p>;
+export function Table({ postings, salarySortDirection, onSalarySortClick }) {
+  if (postings.length === 0) {
+    return <p>No postings found.</p>;
   }
 
   return (
@@ -25,7 +25,7 @@ export function Table({ listings, salarySortDirection, onSalarySortClick }) {
         </tr>
       </thead>
       <tbody>
-        {listings.map(({ key, date, company, url, title, salary }) => {
+        {postings.map(({ key, date, company, url, title, salary }) => {
           return (
             <tr key={key}>
               <td>{date}</td>

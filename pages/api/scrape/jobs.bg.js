@@ -36,10 +36,10 @@ export default async function handler(req, res) {
     const body = await response.text();
 
     const $ = load(body);
-    const listingsEl = $('body > ul > li');
+    const postingsEl = $('body > ul > li');
     const items = [];
 
-    listingsEl.each((_, elem) => {
+    postingsEl.each((_, elem) => {
       const date = $(elem).find('.card-date');
       const title = $(elem).find('.black-link-b');
       const jobInfo = $(elem).find('.card-info.card__subtitle');
@@ -47,11 +47,11 @@ export default async function handler(req, res) {
       const companyName = $(elem).find('.right > a');
       const companyUrl = $(elem).find('.right > a');
 
-      // Filter out elements that might not be listings.
+      // Filter out elements that might not be postings.
       if (date.length > 0) {
         const parsedJobInfo = parseJobInfo(jobInfo.text().trim());
 
-        // Filter out listings that are not in BGN.
+        // Filter out postings that are not in BGN.
         if (parsedJobInfo.salary.currency !== 'BGN') {
           return;
         }
@@ -72,7 +72,7 @@ export default async function handler(req, res) {
       }
     });
 
-    return { items, isLastPage: listingsEl.length === 1 };
+    return { items, isLastPage: postingsEl.length === 1 };
   }
 
   function parseJobInfo(str) {

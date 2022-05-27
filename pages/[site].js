@@ -43,9 +43,9 @@ export default function Home() {
   const [salarySortDirection, setSalarySortDirection] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const listings = useMemo(
+  const postings = useMemo(
     () =>
-      filterListings(
+      filterPostings(
         data?.items,
         selectedLocation,
         selectedSeniority,
@@ -61,7 +61,7 @@ export default function Home() {
     ],
   );
   const locations = useMemo(
-    () => getUniqueValues(data?.items.map(l => l.location)),
+    () => getUniqueValues(data?.items.map(i => i.location)),
     [data?.items],
   );
 
@@ -135,10 +135,10 @@ export default function Home() {
         <button onClick={handleResetClick}>Reset</button>
       </div>
       <hr />
-      <Stats listings={listings} />
+      <Stats postings={postings} />
       <hr />
       <Table
-        listings={listings}
+        postings={postings}
         salarySortDirection={salarySortDirection}
         onSalarySortClick={handleSalarySortClick}
       />
@@ -157,8 +157,8 @@ export default function Home() {
   );
 }
 
-function filterListings(
-  listings = [],
+function filterPostings(
+  postings = [],
   location,
   seniority,
   salarySortDirection,
@@ -170,12 +170,12 @@ function filterListings(
   );
   const blacklistedTitles = new RegExp(/(full[- ]?stack|node)/, 'gi');
 
-  listings = listings
-    .filter(l => l.title.match(whitelistedTitles))
-    .filter(l => !l.title.match(blacklistedTitles));
+  postings = postings
+    .filter(p => p.title.match(whitelistedTitles))
+    .filter(p => !p.title.match(blacklistedTitles));
 
   if (location) {
-    listings = listings.filter(l => l.location === location);
+    postings = postings.filter(p => p.location === location);
   }
 
   if (seniority) {
@@ -187,27 +187,27 @@ function filterListings(
         whitelist = new RegExp(/(junior)/, 'gi');
         blacklist = new RegExp(/(senior|lead|experienced)/, 'gi');
 
-        listings = listings
-          .filter(l => l.title.match(whitelist))
-          .filter(l => !l.title.match(blacklist));
+        postings = postings
+          .filter(p => p.title.match(whitelist))
+          .filter(p => !p.title.match(blacklist));
 
         break;
       case 'mid':
         whitelist = new RegExp(/(mid|regular|\w)/, 'gi');
         blacklist = new RegExp(/(junior|senior|lead|experienced)/, 'gi');
 
-        listings = listings
-          .filter(l => l.title.match(whitelist))
-          .filter(l => !l.title.match(blacklist));
+        postings = postings
+          .filter(p => p.title.match(whitelist))
+          .filter(p => !p.title.match(blacklist));
 
         break;
       case 'senior':
         whitelist = new RegExp(/(senior|lead|experienced)/, 'gi');
         blacklist = new RegExp(/(junior)/, 'gi');
 
-        listings = listings
-          .filter(l => l.title.match(whitelist))
-          .filter(l => !l.title.match(blacklist));
+        postings = postings
+          .filter(p => p.title.match(whitelist))
+          .filter(p => !p.title.match(blacklist));
 
         break;
       default:
@@ -217,7 +217,7 @@ function filterListings(
 
   if (searchTerm) {
     searchTerm = searchTerm.toLowerCase();
-    listings = listings.filter(
+    postings = postings.filter(
       l =>
         l.title.toLowerCase().includes(searchTerm) ||
         l.company.name.toLowerCase().includes(searchTerm),
@@ -227,12 +227,12 @@ function filterListings(
   if (salarySortDirection) {
     switch (salarySortDirection) {
       case 'asc':
-        listings = listings.sort(
+        postings = postings.sort(
           (a, b) => b.salary.range[0] - a.salary.range[0],
         );
         break;
       case 'desc':
-        listings = listings.sort(
+        postings = postings.sort(
           (a, b) => a.salary.range[0] - b.salary.range[0],
         );
         break;
@@ -241,5 +241,5 @@ function filterListings(
     }
   }
 
-  return listings;
+  return postings;
 }

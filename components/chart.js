@@ -117,7 +117,7 @@ export function Chart({ data }) {
           labels,
           datasets: [
             {
-              label: 'Listings',
+              label: 'Postings',
               data: Object.values(chartData),
               backgroundColor: '#4F46E5',
               hoverBackgroundColor: '#6366F1',
