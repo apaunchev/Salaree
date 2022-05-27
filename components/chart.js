@@ -57,7 +57,7 @@ export function Chart({ data }) {
           scales: {
             y: {
               display: false,
-              suggestedMax: 10,
+              suggestedMax: 20,
             },
             x: {
               grid: {
