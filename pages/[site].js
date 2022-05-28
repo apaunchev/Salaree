@@ -29,7 +29,7 @@ export default function Home() {
   );
 
   const [shouldRefresh, setShouldRefresh] = useState(false);
-  const { isValidating: isRefreshing } = useSWR(
+  const { isValidating: isScraping } = useSWR(
     shouldRefresh ? `/api/scrape/${site}` : null,
     fetcher,
     {
@@ -148,11 +148,12 @@ export default function Home() {
         onSalarySortClick={handleSalarySortClick}
       />
       <div className="flex items-center gap-4 pt-4 border-t">
-        <Button disabled={isRefreshing} onClick={handleRefreshClick}>
-          {isRefreshing ? 'Refreshing...' : 'Refresh'}
+        <Button disabled={isScraping} onClick={handleRefreshClick}>
+          {isScraping ? 'Scraping...' : 'Scrape'}
         </Button>
         <p className="text-sm">
-          Last scrape: {new Date(data.scrapedAt).toLocaleString()}
+          Latest scrape:{' '}
+          {data.scrapedAt ? new Date(data.scrapedAt).toLocaleString() : 'never'}
         </p>
       </div>
     </Container>

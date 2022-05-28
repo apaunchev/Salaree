@@ -2,7 +2,7 @@ import { Salary } from './salary';
 
 export function Table({ postings, salarySortDirection, onSalarySortClick }) {
   if (postings.length === 0) {
-    return <p>No postings found.</p>;
+    return <p>No postings to show.</p>;
   }
 
   return (
