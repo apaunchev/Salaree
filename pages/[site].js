@@ -10,6 +10,7 @@ import { Select } from 'components/select';
 import { Input } from 'components/input';
 import { Button } from 'components/button';
 import { filterPostings } from 'lib/filter';
+import { Spinner } from 'components/spinner';
 
 export default function Home() {
   const {
@@ -104,7 +105,7 @@ export default function Home() {
   if (!data) {
     return (
       <Container>
-        <p>Loading....</p>
+        <Spinner />
       </Container>
     );
   }
