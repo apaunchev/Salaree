@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { routes } from 'lib/routes';
+import { scrapers } from 'lib/scrapers';
 
 export function Nav() {
   const router = useRouter();
@@ -8,8 +8,8 @@ export function Nav() {
   return (
     <div className="font-medium text-gray-500 border-b">
       <nav className="flex flex-wrap items-center gap-4 -mb-px">
-        {Object.keys(routes).map(key => {
-          const { href, activePaths, title } = routes[key];
+        {Object.keys(scrapers).map(key => {
+          const { href, activePaths, title } = scrapers[key];
 
           return (
             <Link key={key} href={href}>

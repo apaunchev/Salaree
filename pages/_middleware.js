@@ -1,4 +1,4 @@
-import { routes } from 'lib/routes';
+import { scrapers } from 'lib/scrapers';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
@@ -7,7 +7,7 @@ export async function middleware(req) {
   if (pathname == '/') {
     const url = req.nextUrl.clone();
 
-    url.pathname = `/${Object.keys(routes)[0]}`;
+    url.pathname = `/${Object.keys(scrapers)[0]}`;
 
     return NextResponse.redirect(url);
   }
