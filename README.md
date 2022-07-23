@@ -2,6 +2,8 @@
 
 A salary analysis tool for software engineers working in Bulgaria.
 
+![](./screenshot.png)
+
 ## Why
 
 When applying for jobs, sooner or later you are asked the dreaded salary expectation question. There are many ways to answer it, but at the very least you should know the current market trends and what companies are willing to pay for a given position.
